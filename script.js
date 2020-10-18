@@ -19,7 +19,7 @@ window.onload = function(){
         canvas.style.border = "1px solid";
         document.body.appendChild(canvas);
         ctx = canvas.getContext("2d");
-        snakee= new snake([[6,4],[5,4],[4,4],],"right");
+        snakee= new snake([[6,4],[5,4],[4,4],[3,4],[2,4]],"right");
 		applee= new apple([10,10]);
        /* snakee= new snake([[10,4],[9,4]]);*/
         refreshCanvas();
@@ -27,13 +27,21 @@ window.onload = function(){
     function refreshCanvas()
     { 
     
-        ctx.fillStyle= "#ff0000";
-        ctx.clearRect(0,0,canvasWidth,canvasHeight);
-        snakee.advance();
+     
+		if (snakee.checkcollision())
+		{
+			 alert("GAME OVER");
+		}
+		else {
+			   	ctx.fillStyle= "#ff0000";
+        		ctx.clearRect(0,0,canvasWidth,canvasHeight);
+        		snakee.advance();
+			 	snakee.draw();
+				applee.draw();
+        		setTimeout(refreshCanvas,delay);
+		}
         /*ctx.fillRect(xcoord , ycoord , 100 , 50);*/
-        snakee.draw();
-		applee.draw();
-        setTimeout(refreshCanvas,delay);
+       
     }
     function drawBlock(ctx,postion)
     { 
@@ -146,18 +154,30 @@ window.onload = function(){
 	{
 		var wallcollision = false;
 		var snakecollision = false;
-		var widthblocks = canavasWidth/blocksize;
+		
 		
 		var head = this.body[0];
 		var rest = this.body.slice(1)
 		var snakeX = head[0];
-		var snakeX= head[1];
+		var snakeY= head[1];
 		var minX = 0;
 		var minY =0;
 		var maxX=widhtINblocks-1;
 		var maxY= HeightINblocks-1;
-		var isnotbetweenhor;
-		
+		var isnotbetweenhhorizontalwall= snakeX<minX || snakeX>maxX;
+		var isnotbetweenverticalwall=snakeX<minY || snakeY>maxY;
+		if (isnotbetweenhhorizontalwall || isnotbetweenverticalwall)
+			{
+				wallcollision=true;
+			}
+		for (var i=0; i<rest.length; i++)
+			{
+				if (snakeX==rest[i][0]&& snakeY==rest[i][1])
+					{
+						snakecollision=true;
+					}
+			}
+			return snakecollision || wallcollision;
 		}
 	
 	}
