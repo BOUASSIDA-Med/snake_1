@@ -7,6 +7,9 @@ window.onload = function(){
     var xcoord=0;
     var ycoord=0;
     var snakee;
+	var applee;
+	var widhtINblocks = canvasWidth/blocksize;
+	var HeightINblocks = canvasHeight/blocksize;
     init()
        
     function init(){
@@ -16,7 +19,8 @@ window.onload = function(){
         canvas.style.border = "1px solid";
         document.body.appendChild(canvas);
         ctx = canvas.getContext("2d");
-        snakee= new snake([[6,4],[5,4],[4,4],],"left");
+        snakee= new snake([[6,4],[5,4],[4,4],],"right");
+		applee= new apple([10,10]);
        /* snakee= new snake([[10,4],[9,4]]);*/
         refreshCanvas();
     }
@@ -28,6 +32,7 @@ window.onload = function(){
         snakee.advance();
         /*ctx.fillRect(xcoord , ycoord , 100 , 50);*/
         snakee.draw();
+		applee.draw();
         setTimeout(refreshCanvas,delay);
     }
     function drawBlock(ctx,postion)
@@ -103,7 +108,7 @@ window.onload = function(){
                 }
 		}
        
-        
+
     
         
 
@@ -129,14 +134,51 @@ window.onload = function(){
                         return;
          
 						}
-	
+		
+		
+				
+
+
 	snakee.setdirection(newdirection);
 	
 	}
+	this.checkcollision= function()
+	{
+		var wallcollision = false;
+		var snakecollision = false;
+		var widthblocks = canavasWidth/blocksize;
+		
+		var head = this.body[0];
+		var rest = this.body.slice(1)
+		var snakeX = head[0];
+		var snakeX= head[1];
+		var minX = 0;
+		var minY =0;
+		var maxX=widhtINblocks-1;
+		var maxY= HeightINblocks-1;
+		var isnotbetweenhor;
+		
+		}
 	
 	}
-		
-           
+			   
+          function apple(position){
+			this.position=position;
+			this.draw=function()
+			{
+				ctx.save(); 
+				ctx.fillStyle="#33cc33";
+				ctx.beginPath();
+				var radius= blocksize/2;
+				var x = position[0]*blocksize+radius;
+				var y = position[1]*blocksize+radius;
+				ctx.arc(x,y,radius,0,Math.PI*2,true);
+				ctx.fill();
+				ctx.restore();
+				
+			};
+			
+		}      
  
       
  
